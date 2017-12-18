@@ -1,4 +1,14 @@
 /*
+Modified version of QueueList.h to allow for private variable access to a child class
+Edits by Collin Dietz
+Email: c4dietz@gmail.com
+Original header is below 
+
+edits:
+moved head, tail, and size to protected
+*/
+
+/*
  *  QueueList.h
  *
  *  Library implementing a generic, dynamic queue (linked list version).
@@ -42,8 +52,8 @@
  */
 
 // header defining the interface of the source.
-#ifndef _QUEUELIST_H
-#define _QUEUELIST_H
+#ifndef _QUEUELIST_M_H
+#define _QUEUELIST_M_H
 
 // include Arduino basic header.
 #include <Arduino.h>
@@ -95,11 +105,11 @@ class QueueList {
     static const int ledPin = 13;
 
     Print * printer; // the printer of the queue.
-    int size;        // the size of the queue.
 
    protected:
     link head;       // the head of the list.
     link tail;       // the tail of the list.
+    int size;        // the size of the queue.
 
 };
 
@@ -233,4 +243,4 @@ void QueueList<T>::blink () const {
   // solution selected due to lack of exit() and assert().
 }
 
-#endif // _QUEUELIST_H
+#endif // _QUEUELIST_M_H

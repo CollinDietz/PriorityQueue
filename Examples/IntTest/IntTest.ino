@@ -41,6 +41,7 @@ void setup() {
     }
     
     Serial.println();
+    Serial.println(queue.count());
     Serial.println("Emptying the queue");
 
     //until the queue is empty...

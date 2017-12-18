@@ -1,7 +1,7 @@
 #ifndef PRIORITY_QUEUE_H
 #define PRIORITY_QUEUE_H
 
-#include <QueueList.h>
+#include "QueueList_Modified.h"
 
 template <typename T>
 class PriorityQueue: public QueueList<T>
@@ -81,6 +81,7 @@ void PriorityQueue<T>::push(const T i)
 			prev->next = t;
 		}
 	}
+	this->size++;
 }
 
 
