@@ -22,6 +22,12 @@ class PriorityQueue: public QueueList<T>
 
 	private:
 		CompareFunc compare;
+		//binary search in the list for the node that has the closest priority less than the given item
+		//i.e. the the item to the left of the given when inserted into the list 
+		QueueList<T>::link binSearch(QueueList<T>::link i, QueueList<T>::link i, QueueList<T>::link i); 
+
+		//puts the link item input st inListLeft points to it next, and input points to whatever inListLeft pointed to
+		void insert(QueueList<T>::link input, QueueList<T>::link inListLeft); 
 };
 
 template <typename T>
@@ -45,43 +51,35 @@ void PriorityQueue<T>::push(const T i)
 		this->head = t;
 		this->tail = t;
 	}
-	else
+	else //find by bin search
 	{
-		typename QueueList<T>::link curr = this->head;
-		typename QueueList<T>::link prev = NULL;
-		//search until t has higher priority then curr
-		while(!this->compare(t->item, curr->item) && curr != NULL)
-		{
-			//if current node has higer priority then t
-			//move down the list
-			prev = curr;
-			curr = curr->next;
-		}
+		QueueList<T>::link leftOf = binSearch(t, 0, this->count()-1);
 
 		//element with lower priority has been found
 		//insert t behind it
+		insert(t, leftOf);
 
-		//case: t has higher priority then head
-		if(NULL == prev)
+	}
+	this->size++;
+}
+
+template<T>
+void PriorityQueue<T>::insert(QueueList<T>::link input, QueueList<T>::link inListLeft)
+{
+			//case: t has higher priority then head
+		if(NULL == inListLeft)
 		{
 			t->next = this->head;
 			this->head = t;
 		}
-		//case: t has lowest priority in the list and is now tail
-		else if(NULL == curr)
-		{
-			prev->next = t;
-			t->next = NULL;
-			this->tail = t;
-		}
-		//case t is somewhere in the middle of the list
+		//case t is not the head
 		else
 		{
-			t->next = curr;
-			prev->next = t;
+			t->next = inListLeft->next;
+			inListLeft->next = t;
 		}
-	}
-	this->size++;
+
+
 }
 
 
