@@ -25,15 +25,15 @@ class PriorityQueue: public QueueList<T>
 
 		//bin search the whole queue for a term t st t has higher priority than query 
 		//and query has higher priorty that t->next
-		//ie find the element that points to query in the list 
-		QueueList<T>::link initBinSearch(QueueList<T>::link query);
+		//ie find the element that points to query in the list
+		typename QueueList<T>::link initBinSearch(typename QueueList<T>::link query);
 
 		//binary search in the list for the node that has the closest priority less than the given item
 		//i.e. the the item to the left of the given when inserted into the list 
-		QueueList<T>::link binSearch(QueueList<T>::link query, QueueList<T>::link l, QueueList<T>::link r, int leftIndex, int rightIndex); 
+		typename QueueList<T>::link binSearch(typename QueueList<T>::link query, typename QueueList<T>::link l, typename QueueList<T>::link r, int leftIndex, int rightIndex); 
 
 		//puts the link item input st inListLeft points to it next, and input points to whatever inListLeft pointed to
-		void insert(QueueList<T>::link input, QueueList<T>::link inListLeft); 
+		void insert(typename QueueList<T>::link input, typename QueueList<T>::link inListLeft); 
 };
 
 template <typename T>
@@ -59,7 +59,7 @@ void PriorityQueue<T>::push(const T i)
 	}
 	else //find by bin search
 	{
-		QueueList<T>::link leftOf = initbinSearch(t);
+		typename QueueList<T>::link leftOf = initBinSearch(t);
 
 		//element with lower priority has been found
 		//insert t behind it
@@ -69,48 +69,48 @@ void PriorityQueue<T>::push(const T i)
 	this->size++;
 }
 
-template<T>
-void PriorityQueue<T>::insert(QueueList<T>::link input, QueueList<T>::link inListLeft)
+template<typename T>
+void PriorityQueue<T>::insert(typename QueueList<T>::link input, typename QueueList<T>::link inListLeft)
 {
 		//case: t has higher priority then head
 		if(NULL == inListLeft)
 		{
-			t->next = this->head;
-			this->head = t;
+			input->next = this->head;
+			this->head = input;
 		}
 		//case t is not the head
 		else
 		{
-			t->next = inListLeft->next;
-			inListLeft->next = t;
+			input->next = inListLeft->next;
+			inListLeft->next = input;
 		}
 
 
 }
 
-template<T>
-void PriorityQueue<T>::initBinSearch(QueueList<T>::link	query)
+template<typename T>
+typename QueueList<T>::link PriorityQueue<T>::initBinSearch(typename QueueList<T>::link query)
 {
 	//check header and tail cases
-	if(compare(query, this->head))
+	if(compare(query->item, this->head->item))
 	{
 		//query has higher priority then head, return NULL since nothing points to query
 		return NULL;
 	}
-	else if(compare(this->tail, query))
+	else if(compare(this->tail->item, query->item))
 	{
 		//query has the lowest priority in the list, tail points to it
-		return this>tail;
+		return this->tail;
 	}
 	else
 	{
 		//else search the rest of the list
-		binSearch(query, this->head, this->tail, 0, this->count()-1);
+		return binSearch(query, this->head, this->tail, 0, this->count()-1);
 	}
 }
 
-template<T>
-void PriorityQueue<T>::binSearch(QueueList<T>::link query, QueueList<T>::link l, QueueList<T>::link r, int leftIndex, int rightIndex)
+template<typename T>
+typename QueueList<T>::link PriorityQueue<T>::binSearch(typename QueueList<T>::link query, typename QueueList<T>::link l, typename QueueList<T>::link r, int leftIndex, int rightIndex)
 {
 	//if we have closed the search to one item it is the result
 	if(0 == rightIndex - leftIndex)
@@ -120,7 +120,7 @@ void PriorityQueue<T>::binSearch(QueueList<T>::link query, QueueList<T>::link l,
 	else
 	{
 		//start looking from the left of the given term
-		QueueList<T>::link term = l;
+		typename QueueList<T>::link term = l;
 		int mid = (rightIndex + leftIndex) / 2; //find the mid point of the range
 		for(int i = 0; i < mid - leftIndex; i++) //move term to it
 		{	
@@ -129,16 +129,16 @@ void PriorityQueue<T>::binSearch(QueueList<T>::link query, QueueList<T>::link l,
 
 		//compare to term and term next
 		//term should be higher priority then query
-		if(!this->compare(term, query))
+		if(!this->compare(term->item, query->item))
 		{
 			//if not query is higher priority and we need to look left on the list
-			binSearch(query, l, term, leftIndex, mid);
+			return binSearch(query, l, term, leftIndex, mid);
 		}
 		//query should also be higher priorty than the next item in the list
-		else if(!this->compare(query, term->next))
+		else if(!this->compare(query->item, term->next->item))
 		{
 			//if not we need to look to the right
-			binSearch(query, term, r, mid, rightIndex);
+			return binSearch(query, term, r, mid, rightIndex);
 		}
 		else
 		{
