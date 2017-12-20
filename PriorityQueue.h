@@ -117,7 +117,7 @@ template<typename T>
 typename QueueList<T>::link PriorityQueue<T>::binSearch(typename QueueList<T>::link query, typename QueueList<T>::link l, typename QueueList<T>::link r, int leftIndex, int rightIndex)
 {
 	//if we have closed the search to one item it is the result
-	if(0 == rightIndex - leftIndex)
+	if(0 == rightIndex - leftIndex || rightIndex - 1 == leftIndex)
 	{
 		return l;
 	}
