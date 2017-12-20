@@ -83,6 +83,10 @@ void PriorityQueue<T>::insert(typename QueueList<T>::link input, typename QueueL
 		{
 			input->next = inListLeft->next;
 			inListLeft->next = input;
+			if(this->tail == inListLeft)
+			{
+				this->tail = input;
+			}
 		}
 
 
